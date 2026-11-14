@@ -1,2 +1,1 @@
-# Example
-An example greeter plugin
+Recolor native boss health HUD
