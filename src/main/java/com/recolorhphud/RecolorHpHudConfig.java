@@ -52,7 +52,7 @@ public interface RecolorHpHudConfig extends Config
 	)
 	default Color valueColor()
 	{
-		return Color.WHITE;
+		return Color.YELLOW;
 	}
 
 	@Range(min = 0, max = 255)
@@ -86,7 +86,7 @@ public interface RecolorHpHudConfig extends Config
 	)
 	default Color barForegroundColor()
 	{
-		return Color.GREEN;
+		return new Color(0, 170, 0);
 	}
 
 	@Range(min = 0, max = 255)
@@ -109,7 +109,7 @@ public interface RecolorHpHudConfig extends Config
 	)
 	default Color barBackgroundColor()
 	{
-		return ColorScheme.PROGRESS_ERROR_COLOR;
+		return new Color(170, 0, 0);
 	}
 
 	@Range(min = 0, max = 255)
