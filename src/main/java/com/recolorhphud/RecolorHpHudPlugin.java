@@ -1,19 +1,16 @@
 package com.recolorhphud;
 
 import com.google.inject.Provides;
-import java.awt.Color;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
+import net.runelite.api.ScriptID;
 import net.runelite.api.events.BeforeRender;
-import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -23,11 +20,19 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class RecolorHpHudPlugin extends Plugin
 {
+	public static final int HP_HUD_GREEN = 51200;
+	public static final int HP_HUD_RED = 13107200;
+	public static final int HP_HUD_DARK_GREEN = 36864;
+
 	@Inject
 	private Client client;
 
 	@Inject
 	private RecolorHpHudConfig config;
+
+	private int originalBarForeground = 0;
+	private int originalBarBackground = 0;
+	private int originalBarProgress = 0;
 
 	@Subscribe
 	public void onBeforeRender(BeforeRender beforeRender)
@@ -63,22 +68,58 @@ public class RecolorHpHudPlugin extends Plugin
 		Widget barForeground = client.getWidget(InterfaceID.HpbarHud.HEALTH_BAR_REMAINING);
 		if (barForeground != null)
 		{
-			barForeground.setTextColor(config.barForegroundColor().getRGB());
+			if (originalBarForeground == HP_HUD_GREEN)
+			{
+				barForeground.setTextColor(config.barForegroundColor().getRGB());
+			}
 			barForeground.setOpacity(255 - config.barForegroundOpacity());
 		}
 
 		Widget barBackground = client.getWidget(InterfaceID.HpbarHud.HEALTH_BAR_BACK);
 		if (barBackground != null)
 		{
-			barBackground.setTextColor(config.barBackgroundColor().getRGB());
+			if (originalBarBackground == HP_HUD_RED)
+			{
+				barBackground.setTextColor(config.barBackgroundColor().getRGB());
+			}
 			barBackground.setOpacity(255 - config.barBackgroundOpacity());
 		}
 
 		Widget barProgress = client.getWidget(InterfaceID.HpbarHud.HEALTH_BAR_SLIDING);
 		if (barProgress != null)
 		{
-			barProgress.setTextColor(config.barProgressColor().getRGB());
+			if (originalBarProgress == HP_HUD_DARK_GREEN)
+			{
+				barProgress.setTextColor(config.barProgressColor().getRGB());
+			}
 			barProgress.setOpacity(255 - config.barProgressOpacity());
+		}
+	}
+
+	@Subscribe
+	public void onScriptPreFired(ScriptPreFired scriptPreFired)
+	{
+		if (scriptPreFired.getScriptId() != ScriptID.HP_HUD_UPDATE)
+		{
+			return;
+		}
+
+		Widget barForeground = client.getWidget(InterfaceID.HpbarHud.HEALTH_BAR_REMAINING);
+		if (barForeground != null)
+		{
+			originalBarForeground = barForeground.getTextColor();
+		}
+
+		Widget barBackground = client.getWidget(InterfaceID.HpbarHud.HEALTH_BAR_BACK);
+		if (barBackground != null)
+		{
+			originalBarBackground = barBackground.getTextColor();
+		}
+
+		Widget barProgress = client.getWidget(InterfaceID.HpbarHud.HEALTH_BAR_SLIDING);
+		if (barProgress != null)
+		{
+			originalBarProgress = barProgress.getTextColor();
 		}
 	}
 
