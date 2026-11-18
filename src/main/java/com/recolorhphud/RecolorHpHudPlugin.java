@@ -1,11 +1,14 @@
 package com.recolorhphud;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.util.Set;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
 import net.runelite.api.events.BeforeRender;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
@@ -24,6 +27,16 @@ public class RecolorHpHudPlugin extends Plugin
 	public static final int HP_HUD_RED = 13107200;
 	public static final int HP_HUD_DARK_GREEN = 36864;
 
+	public static final int HP_HUD_FADE_IN = 2887;
+	public static final int HP_HUD_OPEN = 2376;
+
+
+	public static final ImmutableSet<Integer> HP_HUD_SCRIPT_IDS = ImmutableSet.of(
+		HP_HUD_FADE_IN,
+		HP_HUD_OPEN,
+		ScriptID.HP_HUD_UPDATE
+	);
+
 	@Inject
 	private Client client;
 
@@ -37,18 +50,6 @@ public class RecolorHpHudPlugin extends Plugin
 	@Subscribe
 	public void onBeforeRender(BeforeRender beforeRender)
 	{
-		Widget border = client.getWidget(InterfaceID.HpbarHud.OUTER_BORDER);
-		if (border != null)
-		{
-			border.setOpacity(255 - config.frameOpacity());
-		}
-
-		Widget frame = client.getWidget(InterfaceID.HpbarHud.NAME_BACKING);
-		if (frame != null)
-		{
-			frame.setOpacity(255 - config.frameOpacity());
-		}
-
 		Widget name = client.getWidget(InterfaceID.HpbarHud.CREATURE_NAME);
 		if (name != null)
 		{
@@ -94,12 +95,31 @@ public class RecolorHpHudPlugin extends Plugin
 			}
 			barProgress.setOpacity(255 - config.barProgressOpacity());
 		}
+
+		Widget barBorder = client.getWidget(InterfaceID.HpbarHud.INNER_BORDER);
+		if (barBorder != null)
+		{
+			barBorder.setTextColor(config.barBorderColor().getRGB());
+			barBorder.setOpacity(255 - config.barBorderOpacity());
+		}
+
+		Widget border = client.getWidget(InterfaceID.HpbarHud.OUTER_BORDER);
+		if (border != null)
+		{
+			border.setOpacity(255 - config.frameOpacity());
+		}
+
+		Widget frame = client.getWidget(InterfaceID.HpbarHud.NAME_BACKING);
+		if (frame != null)
+		{
+			frame.setOpacity(255 - config.frameOpacity());
+		}
 	}
 
 	@Subscribe
 	public void onScriptPreFired(ScriptPreFired scriptPreFired)
 	{
-		if (scriptPreFired.getScriptId() != ScriptID.HP_HUD_UPDATE)
+		if (!HP_HUD_SCRIPT_IDS.contains(scriptPreFired.getScriptId()))
 		{
 			return;
 		}

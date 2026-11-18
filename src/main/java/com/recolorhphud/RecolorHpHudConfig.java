@@ -4,17 +4,51 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Range;
 import net.runelite.client.ui.ColorScheme;
 
 @ConfigGroup("recolorhphud")
 public interface RecolorHpHudConfig extends Config
 {
+	@ConfigSection(
+		name = "Target Name",
+		description = "",
+		position = 0,
+		closedByDefault = true
+	)
+	String targetName = "targetName";
+
+	@ConfigSection(
+		name = "Health Bar Value",
+		description = "",
+		position = 1,
+		closedByDefault = true
+	)
+	String healthBarValue = "healthBarValue";
+
+	@ConfigSection(
+		name = "Health Bar",
+		description = "",
+		position = 2,
+		closedByDefault = true
+	)
+	String healthBar = "healthBar";
+
+	@ConfigSection(
+		name = "Frame",
+		description = "",
+		position = 3,
+		closedByDefault = true
+	)
+	String frame = "frame";
+
 	@ConfigItem(
 		keyName = "nameColor",
-		name = "Name Color",
+		name = "Color",
 		description = "",
-		position = 0
+		position = 0,
+		section = targetName
 	)
 	default Color nameColor()
 	{
@@ -24,9 +58,10 @@ public interface RecolorHpHudConfig extends Config
 	@Range(min = 0, max = 255)
 	@ConfigItem(
 		keyName = "nameOpacity",
-		name = " - Opacity",
+		name = "Opacity",
 		description = "0 = fully transparent, 255 = fully opaque",
-		position = 1
+		position = 1,
+		section = targetName
 	)
 	default int nameOpacity()
 	{
@@ -35,9 +70,10 @@ public interface RecolorHpHudConfig extends Config
 
 	@ConfigItem(
 		keyName = "nameShadowed",
-		name = " - Shadow",
+		name = "Shadow",
 		description = "",
-		position = 2
+		position = 2,
+		section = targetName
 	)
 	default boolean nameShadowed()
 	{
@@ -46,9 +82,10 @@ public interface RecolorHpHudConfig extends Config
 
 	@ConfigItem(
 		keyName = "valueColor",
-		name = "Value Color",
+		name = "Color",
 		description = "",
-		position = 3
+		position = 3,
+		section = healthBarValue
 	)
 	default Color valueColor()
 	{
@@ -58,9 +95,10 @@ public interface RecolorHpHudConfig extends Config
 	@Range(min = 0, max = 255)
 	@ConfigItem(
 		keyName = "valueOpacity",
-		name = " - Opacity",
+		name = "Opacity",
 		description = "0 = fully transparent, 255 = fully opaque",
-		position = 4
+		position = 4,
+		section = healthBarValue
 	)
 	default int valueOpacity()
 	{
@@ -69,9 +107,10 @@ public interface RecolorHpHudConfig extends Config
 
 	@ConfigItem(
 		keyName = "valueShadowed",
-		name = " - Shadow",
+		name = "Shadow",
 		description = "",
-		position = 5
+		position = 5,
+		section = healthBarValue
 	)
 	default boolean valueShadowed()
 	{
@@ -80,9 +119,10 @@ public interface RecolorHpHudConfig extends Config
 
 	@ConfigItem(
 		keyName = "barForegroundColor",
-		name = "Bar Foreground Color",
+		name = "Foreground Color",
 		description = "",
-		position = 6
+		position = 6,
+		section = healthBar
 	)
 	default Color barForegroundColor()
 	{
@@ -92,9 +132,10 @@ public interface RecolorHpHudConfig extends Config
 	@Range(min = 0, max = 255)
 	@ConfigItem(
 		keyName = "barForegroundOpacity",
-		name = " - Opacity",
+		name = "Foreground Opacity",
 		description = "0 = fully transparent, 255 = fully opaque",
-		position = 7
+		position = 7,
+		section = healthBar
 	)
 	default int barForegroundOpacity()
 	{
@@ -103,9 +144,10 @@ public interface RecolorHpHudConfig extends Config
 
 	@ConfigItem(
 		keyName = "barBackgroundColor",
-		name = "Bar Background Color",
+		name = "Background Color",
 		description = "",
-		position = 8
+		position = 8,
+		section = healthBar
 	)
 	default Color barBackgroundColor()
 	{
@@ -115,9 +157,10 @@ public interface RecolorHpHudConfig extends Config
 	@Range(min = 0, max = 255)
 	@ConfigItem(
 		keyName = "barBackgroundOpacity",
-		name = " - Opacity",
+		name = "Background Opacity",
 		description = "0 = fully transparent, 255 = fully opaque",
-		position = 9
+		position = 9,
+		section = healthBar
 	)
 	default int barBackgroundOpacity()
 	{
@@ -126,9 +169,10 @@ public interface RecolorHpHudConfig extends Config
 
 	@ConfigItem(
 		keyName = "barProgressColor",
-		name = "Bar Sliding Color",
+		name = "Sliding Color",
 		description = "",
-		position = 10
+		position = 10,
+		section = healthBar
 	)
 	default Color barProgressColor()
 	{
@@ -138,11 +182,59 @@ public interface RecolorHpHudConfig extends Config
 	@Range(min = 0, max = 255)
 	@ConfigItem(
 		keyName = "barProgressOpacity",
-		name = " - Opacity",
+		name = "Sliding Opacity",
 		description = "0 = fully transparent, 255 = fully opaque",
-		position = 11
+		position = 11,
+		section = healthBar
 	)
 	default int barProgressOpacity()
+	{
+		return 255;
+	}
+
+	@ConfigItem(
+		keyName = "barBorderColor",
+		name = "Border Color",
+		description = "",
+		position = 12,
+		section = healthBar
+	)
+	default Color barBorderColor() {
+		return Color.BLACK;
+	}
+
+	@Range(min = 0, max = 255)
+	@ConfigItem(
+		keyName = "barBorderOpacity",
+		name = "Border Opacity",
+		description = "",
+		position = 13,
+		section = healthBar
+	)
+	default int barBorderOpacity() {
+		return 255;
+	}
+
+	@ConfigItem(
+		keyName = "frameBorderColor",
+		name = "Frame Border Color",
+		description = "",
+		position = 14,
+		section = frame
+	)
+	default Color frameBorderColor() {
+		return Color.BLACK;
+	}
+
+	@Range(min = 0, max = 255)
+	@ConfigItem(
+		keyName = "frameBorderOpacity",
+		name = "Frame Border Opacity",
+		description = "0 = fully transparent, 255 = fully opaque",
+		position = 15,
+		section = frame
+	)
+	default int frameBorderOpacity()
 	{
 		return 255;
 	}
@@ -152,7 +244,8 @@ public interface RecolorHpHudConfig extends Config
 		keyName = "frameOpacity",
 		name = "Frame Opacity",
 		description = "0 = fully transparent, 255 = fully opaque",
-		position = 12
+		position = 16,
+		section = frame
 	)
 	default int frameOpacity()
 	{
