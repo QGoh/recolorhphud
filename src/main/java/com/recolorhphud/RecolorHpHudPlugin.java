@@ -2,13 +2,11 @@ package com.recolorhphud;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
-import java.util.Set;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
 import net.runelite.api.events.BeforeRender;
-import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
@@ -113,6 +111,31 @@ public class RecolorHpHudPlugin extends Plugin
 		if (frame != null)
 		{
 			frame.setOpacity(255 - config.frameOpacity());
+		}
+
+		Widget extraBarForeground = client.getWidget(InterfaceID.HpbarHud.HEALTH_BAR_REMAINING_EXTRA);
+		if (extraBarForeground != null)
+		{
+			extraBarForeground.setOpacity(255 - config.barForegroundOpacity());
+		}
+
+		Widget extraBarBackground = client.getWidget(InterfaceID.HpbarHud.HEALTH_BAR_BACK_EXTRA);
+		if (extraBarBackground != null)
+		{
+			extraBarBackground.setOpacity(255 - config.barBackgroundOpacity());
+		}
+
+		Widget extraBarProgress = client.getWidget(InterfaceID.HpbarHud.HEALTH_BAR_SLIDING_EXTRA);
+		if (extraBarProgress != null)
+		{
+			extraBarProgress.setOpacity(255 - config.barProgressOpacity());
+		}
+
+		Widget extraBarBorder = client.getWidget(InterfaceID.HpbarHud.INNER_BORDER_EXTRA);
+		if (extraBarBorder != null)
+		{
+			extraBarBorder.setTextColor(config.barBorderColor().getRGB());
+			extraBarBorder.setOpacity(255 - config.barBorderOpacity());
 		}
 	}
 
