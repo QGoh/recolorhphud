@@ -44,13 +44,13 @@ public interface RecolorHpHudConfig extends Config
 	String frame = "frame";
 
 	@ConfigItem(
-		keyName = "nameColor",
+		keyName = "targetNameColor",
 		name = "Color",
 		description = "",
 		position = 0,
 		section = targetName
 	)
-	default Color nameColor()
+	default Color targetNameColor()
 	{
 		return ColorScheme.BRAND_ORANGE;
 	}
@@ -69,50 +69,50 @@ public interface RecolorHpHudConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "nameShadowed",
+		keyName = "nameShadow",
 		name = "Shadow",
 		description = "",
 		position = 2,
 		section = targetName
 	)
-	default boolean nameShadowed()
+	default boolean nameShadow()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-		keyName = "valueColor",
+		keyName = "barValueColor",
 		name = "Color",
 		description = "",
 		position = 3,
 		section = healthBarValue
 	)
-	default Color valueColor()
+	default Color barValueColor()
 	{
 		return Color.YELLOW;
 	}
 
 	@Range(min = 0, max = 255)
 	@ConfigItem(
-		keyName = "valueOpacity",
+		keyName = "barValueOpacity",
 		name = "Opacity",
 		description = "0 = fully transparent, 255 = fully opaque",
 		position = 4,
 		section = healthBarValue
 	)
-	default int valueOpacity()
+	default int barValueOpacity()
 	{
 		return 255;
 	}
 
 	@ConfigItem(
-		keyName = "valueShadowed",
+		keyName = "barValueShadow",
 		name = "Shadow",
 		description = "",
 		position = 5,
 		section = healthBarValue
 	)
-	default boolean valueShadowed()
+	default boolean barValueShadow()
 	{
 		return true;
 	}
